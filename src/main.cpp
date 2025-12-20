@@ -11,7 +11,7 @@ void setup() {
   delay(500);
   // HelpCommand();
   pinMode(A0, INPUT);
-  Serial.println("hello");
+  HomeServos();
 }
 
 //testing testing

@@ -137,13 +137,16 @@ bool ServoSetAngle(String args)
 
 void HomeServos()
 {
-  Serial.println("Homing all servos to 150 degrees");
-  int degrees = map(150, 0, 180, SERVOMIN, SERVOMAX);
-  pwm.setPWM(0, 0, map(90, 0, 180, SERVOMIN, SERVOMAX));
-  for(int index = 1; index < NUM_SERVOS; index++) // offset by 1 to account for the base servo which doesn't offset. 
+  byte SERVOOFFSET = (SERVOMIN - SERVOMAX) / 3; //60 degrees offset for homing
+  Serial.println("Homing all servos to 90 degrees");
+  int degrees = (SERVOMAX - SERVOMIN) / 2 + SERVOMIN;
+  pwm.setPWM(0, 0, degrees);
+  for(int i = 1; i < 3; i++)
   {
-    pwm.setPWM(index, 0, degrees);
+    pwm.setPWM(i, 0, degrees + SERVOOFFSET);
+    delay(100);
   }
+  
 }
 
 float PrintServoAngle(String index) ///always returns integer angle, I wonder why that is :/

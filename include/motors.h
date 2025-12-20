@@ -7,9 +7,10 @@
 #define SERVOMAX  560  // Maximum pulse length (out of 4096)
 #define SERVO_FREQ 50  // Servo frequency (50Hz for most analog servos)
 
+#define SERVO_ANGLE_OFFSET 60
+
 int NUM_SERVOS;
 Adafruit_PWMServoDriver pwm;
-
 
 void setupMotors(int servoAmount)
 {
@@ -51,6 +52,63 @@ void setupMotors(int servoAmount)
 }
 
 //later on I want to improve this function by taking in an angle from the rotary encoder and using it to find how to time to slow down speed. 
+bool ServosSetAngles(int args[])
+{
+
+  int angle1 = args[0];
+  int angle2 = args[1];
+  int angle3 = args[2];
+
+  Serial.println("Setting servos to angles: " + String(angle1) + ", " + String(angle2) + ", " + String(angle3));
+
+  if (angle1 < 0 || angle1 > 180 || angle2 < 0 || angle2 > 180 || angle3 < 0 || angle3 > 180) {
+    Serial.println("Invalid angle(s)");
+    return false;
+  }
+
+  pwm.setPWM(0, 0, map(angle1, 0, 180, SERVOMIN, SERVOMAX));
+  pwm.setPWM(1, 0, map(angle2, 0, 180, SERVOMIN, SERVOMAX));
+  pwm.setPWM(2, 0, map(angle3, 0, 180, SERVOMIN, SERVOMAX));
+
+  return true;
+}
+
+// bool ServosSetPath(String args)
+// {
+//   args.trim();
+//   Serial.println("Received path:");
+//   Serial.println(args);
+
+//   while (args.length() > 0) {
+//     int spacer1 = args.indexOf(' ');
+//     if (spacer1 == -1) return false;
+
+//     int spacer2 = args.indexOf(' ', spacer1 + 1);
+//     if (spacer2 == -1) return false;
+
+//     int spacer3 = args.indexOf(' ', spacer2 + 1);
+
+//     String firstString;
+//     if (spacer3 == -1) {
+//       // Last group of 3, take the rest of the string
+//       firstString = args;
+//       args = "";
+//     } else {
+//       firstString = args.substring(0, spacer3);
+//       args = args.substring(spacer3 + 1);
+//     }
+
+//     firstString.trim();
+//     Serial.print("Setting angles: ");
+//     Serial.println(firstString);
+//     ServosSetAngles(firstString);
+//     delay(250); // optional delay between movements
+//   }
+
+//   Serial.println("Path complete");
+//   return true;
+// }
+
 bool ServoSetAngle(String args)
 {
   args.trim();

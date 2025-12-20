@@ -28,92 +28,111 @@ void HelpCommand()
     Serial.println("Make sure a number/char is placed after space (Help 1)");
 }
 
-void DispatchCommand(String command, String others)
-{
-    command.toUpperCase(); //also handling this in the other function but whatever
-    if(command == "SERVO")
-    {
-        ServoSetAngle(others);
-        return;
-    }
-    else if(command == "HELP")
-    {
-        HelpCommand();
-        return;
-    }
-    else if (command == "HOME")
-    {
-        HomeServos();
-        return;
-    }
-    else if(command == "ANGLE")
-    {
-        //this command is special because it is used for things outside of just commands for Serial
-        Serial.print(PrintServoAngle(others));
-        Serial.println();
-    }
+// void DispatchCommand(String command, String others)
+// {
+//     command.toUpperCase(); //also handling this in the other function but whatever
+//     if(command == "SERVO")
+//     {
+//         ServoSetAngle(others);
+//         return;
+//     }
+//     else if (command == "SERVOS")
+//     {
+//         ServosSetAngles(others);
+//         return;
+//     }
+//     else if (command == "SPATH")
+//     {
 
-    else{
-        Serial.println("Invalid Command");
-    }
-}
+//         ServosSetPath(others);
+//         return;
+//     }
+//     else if(command == "HELP")
+//     {
+//         HelpCommand();
+//         return;
+//     }
+//     else if (command == "HOME")
+//     {
+//         HomeServos();
+//         return;
+//     }
+//     else if(command == "ANGLE")
+//     {
+//         //this command is special because it is used for things outside of just commands for Serial
+//         Serial.print(PrintServoAngle(others));
+//         Serial.println();
+//     }
+
+//     else{
+//         Serial.println("Invalid Command");
+//     }
+// }
 
 
-void StringParse(String line)
-{
-    line.trim();
-    if(line.length() == 0) return;
+// void StringParse(String line)
+// {
+//     line.trim();
+//     if(line.length() == 0) return;
 
-    line.toUpperCase();
+//     line.toUpperCase();
 
-    int spaceIndex = -1;
-    for(int i = 0; i < line.length(); i++)
-    {
-        if(line[i] == ' ')
-        {
-            spaceIndex = i;
-            break;
-        }
-    }
-    if(spaceIndex != -1) //for cases where there are no given perameters. Only putting here for convenience, few functions with no params. 
-    {
-        String command = line.substring(0, spaceIndex);
-        String others = line.substring(spaceIndex + 1);
+//     int spaceIndex = -1;
+//     Serial.println("This is the line: ");
+//     Serial.println(line);
+//     for(int i = 0; i < line.length(); i++)
+//     {
+//         if(line[i] == ' ')
+//         {
+//             spaceIndex = i;
+//             Serial.println("space index" );
+//             Serial.print(spaceIndex);
+//             break;
+//         }
+//     }
+//     if(spaceIndex != -1) //for cases where there are no given perameters. Only putting here for convenience, few functions with no params. 
+//     {
+//         String command = line.substring(0, spaceIndex);
+//         Serial.println(command);
+//         String others = line.substring(spaceIndex + 1);
+//         Serial.println(others);
 
-        DispatchCommand(command, others);
-    }
-    return;
+//         DispatchCommand(command, others);
+//     }
+//     return;
     
-}
-String ReadSerialLine()
-{
-    static String command = "";
-    //Serial.print("hello");
-    while(Serial.available())
-    {
+// }
+
+
+// String ReadSerialLine()
+// {
+//     static String command = "";
+//     //Serial.print("hello");
+//     while(Serial.available())
+//     {
         
-        char c = Serial.read();
-        if(c =='\n')
-        {
-            String temp = command;
-            command = "";
-            Serial.println();
-            return temp;
-        }
-        else if(c=='\b')
-        {
-            command.remove(command.length() - 1);
-            Serial.print('\b');
-            Serial.print(" ");
-            Serial.print('\b');
-        }
-        else
-        {
-            command += c;
-            Serial.print(c);
-        }
-    }
-    return "";
-}
+//         char c = Serial.read();
+//         if(c =='\n')
+//         {
+//             String temp = command;
+//             command = "";
+//             Serial.println();
+//             return temp;
+//         }
+//         else if(c=='\b')
+//         {
+//             command.remove(command.length() - 1);
+//             Serial.print('\b');
+//             Serial.print(" ");
+//             Serial.print('\b');
+//         }
+//         else
+//         {
+//             command += c;
+//             Serial.print(c);
+//         }
+//     }
+//     return "";
+// }
 
 

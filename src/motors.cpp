@@ -83,7 +83,7 @@ bool ServoSetAngle(String args)
 
 void HomeServos()
 {
-  int SERVOOFFSET = (SERVOMAX - SERVOMIN) / (3); //60 degrees offset for homing
+  int SERVOOFFSET = (SERVOMIN - SERVOMAX) / (3); //60 degrees offset for homing
   
   // optional message for debugging
   Serial.println("Homing all servos to straight position. ");
@@ -93,7 +93,7 @@ void HomeServos()
   pwm.setPWM(0, 0, degrees);
   for(int i = 1; i < NUM_SERVOS; i++)
   {
-    pwm.setPWM(i, 0, degrees - SERVOOFFSET);
+    pwm.setPWM(i, 0, degrees + SERVOOFFSET);
     delay(100);
   }
   

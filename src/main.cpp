@@ -14,7 +14,7 @@ void setup() {
   delay(500);
   
   // home servos on startup - not needed every time
-  //HomeServos();
+  HomeServos();
 }
 
 

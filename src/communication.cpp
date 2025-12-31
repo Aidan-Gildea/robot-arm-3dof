@@ -1,6 +1,12 @@
-#pragma once
-#include <Arduino.h>
-#include <motors.h>
+// Please note that this code is currently commented out and not in use. 
+
+// It is meant to interface directly between Serial and the robot arm, however it is commented at the moment so that it does not interfere with my current IK reader.  
+
+
+// #pragma once
+// #include <Arduino.h>
+// #include <motors.h>
+
 
 /*
 Have to a function for: 
@@ -17,16 +23,16 @@ Basic architecture: CMD ARG1 ARG2 and any others.
 
 */
 
-void HelpCommand()
-{
-    Serial.println("List of Commands: ");
-    Serial.println("SERVO index angle (moves a single servo)");
-    Serial.println("ANGLE index (gets current angle of servo)");
-    Serial.println("HOME (Resets all servos to 90 degrees)");
-    Serial.println("HELP (provides list of commands)");
-    Serial.println();
-    Serial.println("Make sure a number/char is placed after space (Help 1)");
-}
+// void HelpCommand()
+// {
+//     Serial.println("List of Commands: ");
+//     Serial.println("SERVO index angle (moves a single servo)");
+//     Serial.println("ANGLE index (gets current angle of servo)");
+//     Serial.println("HOME (Resets all servos to 90 degrees)");
+//     Serial.println("HELP (provides list of commands)");
+//     Serial.println();
+//     Serial.println("Make sure a number/char is placed after space (Help 1)");
+// }
 
 // void DispatchCommand(String command, String others)
 // {

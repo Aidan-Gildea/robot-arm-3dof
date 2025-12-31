@@ -1,7 +1,7 @@
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
-#include <communication.h>
-#include <motors.h>
+// #include <communication.cpp> 
+#include "motors.h"
 
 void setup() {
 
@@ -64,7 +64,7 @@ void loop() // serial reader
       {
         angles[i] = 0; // Reset angles after processing
       }
-      
+
       currIndex = 0; // Reset index for next input
     }
   }

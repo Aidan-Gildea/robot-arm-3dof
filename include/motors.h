@@ -8,6 +8,11 @@
 #define SERVO_FREQ 50  // Servo frequency (50Hz for most analog servos)
 #define SERVO_ANGLE_OFFSET 60 // note that the servos home to 150 degrees for more ROM
 
+// Individual servo angle offsets to account for any hardware misalignment
+#define SERVO1_ANGLE_OFFSET 10
+#define SERVO2_ANGLE_OFFSET -10
+#define SERVO3_ANGLE_OFFSET -5
+
 extern int NUM_SERVOS;
 extern Adafruit_PWMServoDriver pwm;
 

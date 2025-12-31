@@ -1,31 +1,28 @@
 #include <Arduino.h>
 #include <Adafruit_PWMServoDriver.h>
-
-// Servo min and max pulse lengths
-#define SERVOMIN  145  // Minimum pulse length (out of 4096)
-#define SERVOMAX  560  // Maximum pulse length (out of 4096)
-#define SERVO_FREQ 50  // Servo frequency (50Hz for most analog servos)
-
-#define SERVO_ANGLE_OFFSET 60 // note that the servos home to 150 degrees for more ROM
-
-// should probably go in .README
-// when plugging in feedback pins, make sure they are in order A0, A1, A2, etc.
-
+#include "motors.h"
 
 
 int NUM_SERVOS;
 Adafruit_PWMServoDriver pwm;
+const int GENERAL_PULSE_OFFSET = map(SERVO_ANGLE_OFFSET,0,180,0,SERVOMAX-SERVOMIN);
+const int SERVO1_PULSE_OFFSET = map(SERVO1_ANGLE_OFFSET,-90,90,-(SERVOMAX-SERVOMIN)/2, (SERVOMAX-SERVOMIN)/2);
+const int SERVO2_PULSE_OFFSET = map(SERVO2_ANGLE_OFFSET,-90,90,-(SERVOMAX-SERVOMIN)/2, (SERVOMAX-SERVOMIN)/2);
+const int SERVO3_PULSE_OFFSET = map(SERVO3_ANGLE_OFFSET,-90,90,-(SERVOMAX-SERVOMIN)/2, (SERVOMAX-SERVOMIN)/2);
+const int DEGREE_90_PULSE = SERVOMIN + (SERVOMAX - SERVOMIN) / 2; // 90 degrees pulse length
+
 
 void setupMotors(int servoAmount)
 {
-    pwm = Adafruit_PWMServoDriver();
-    pwm.begin(); // very important to call this function!!
-    pwm.setPWMFreq(SERVO_FREQ);
+  NUM_SERVOS = servoAmount;
+  pwm = Adafruit_PWMServoDriver();
+  pwm.begin(); // very important to call this function!!
+  pwm.setPWMFreq(SERVO_FREQ);
 
-    // setup for feedback pins
-    for (int i = 0; i < servoAmount && i < 6; i++) {
-        pinMode(A0 + i, INPUT); // A0, A1, etc. are sequential constants
-    }
+  // setup for feedback pins
+  for (int i = 0; i < servoAmount && i < 6; i++) {
+      pinMode(A0 + i, INPUT); // A0, A1, etc. are sequential constants
+  }
 }
 
 //later on I want to improve this function by taking in an angle from the rotary encoder and using it to find how to time to slow down speed. 
@@ -45,9 +42,9 @@ bool ServosSetAngles(int args[])
     return false;
   }
 
-  pwm.setPWM(0, 0, map(angle1, 0, 180, SERVOMIN, SERVOMAX)); 
-  pwm.setPWM(1, 0, map(angle2, 0, 180, SERVOMIN, SERVOMAX));
-  pwm.setPWM(2, 0, map(angle3, 0, 180, SERVOMIN, SERVOMAX));
+  pwm.setPWM(0, 0, DEGREE_90_PULSE + SERVO1_PULSE_OFFSET); 
+  pwm.setPWM(1, 0, DEGREE_90_PULSE + SERVO2_PULSE_OFFSET);
+  pwm.setPWM(2, 0, DEGREE_90_PULSE +  SERVO3_PULSE_OFFSET);
 
   return true;
 }
@@ -55,47 +52,44 @@ bool ServosSetAngles(int args[])
 
 // }
 
-bool ServoSetAngle(String args)
-{
-  args.trim();
-  int space = args.indexOf(' ');
-  if(space == -1)
-  {
-    Serial.println("Incorrect Inputs for SERVO");
-  }
-  else
-  {
-    Serial.println("Moving SERVO " + args);
-  }
+// bool ServoSetAngle(String args)
+// {
+//   args.trim();
+//   int space = args.indexOf(' ');
+//   if(space == -1)
+//   {
+//     Serial.println("Incorrect Inputs for SERVO");
+//   }
+//   else
+//   {
+//     Serial.println("Moving SERVO " + args);
+//   }
 
-  byte servoIndex = args.substring(0, space).toInt();
-  float angle = args.substring(space + 1).toFloat();
-  Serial.println();
+//   byte servoIndex = args.substring(0, space).toInt();
+//   float angle = args.substring(space + 1).toFloat();
+//   Serial.println();
 
 
-  if(servoIndex >= NUM_SERVOS || servoIndex < 0) return false;
-  if(angle > 180 || angle < 0) return false;
-  int pulseLength = map(angle, 0, 180, SERVOMIN, SERVOMAX);
-  pwm.setPWM(servoIndex, 0, pulseLength);
-  return true;
+//   if(servoIndex >= NUM_SERVOS || servoIndex < 0) return false;
+//   if(angle > 180 || angle < 0) return false;
+//   int pulseLength = map(angle, 0, 180, SERVOMIN, SERVOMAX);
+//   pwm.setPWM(servoIndex, 0, pulseLength);
+//   return true;
 
-}
+// }
 
 void HomeServos()
 {
-  int SERVOOFFSET = (SERVOMIN - SERVOMAX) / (3); //60 degrees offset for homing
-  
   // optional message for debugging
-  Serial.println("Homing all servos to straight position. ");
+  //Serial.println("Homing all servos to straight position. ");
   
-  int degrees = (SERVOMAX - SERVOMIN) / 2 + SERVOMIN; // 90 degrees
+  int degrees = (SERVOMAX - SERVOMIN) / 2 + SERVOMIN; // 90 degrees for all
 
-  pwm.setPWM(0, 0, degrees);
-  for(int i = 1; i < NUM_SERVOS; i++)
-  {
-    pwm.setPWM(i, 0, degrees + SERVOOFFSET);
-    delay(100);
-  }
+  Serial.println(degrees);
+  
+  pwm.setPWM(0, 0, DEGREE_90_PULSE + SERVO1_PULSE_OFFSET); 
+  pwm.setPWM(1, 0, DEGREE_90_PULSE + SERVO2_PULSE_OFFSET + GENERAL_PULSE_OFFSET);
+  pwm.setPWM(2, 0, DEGREE_90_PULSE +  SERVO3_PULSE_OFFSET + GENERAL_PULSE_OFFSET);
   
 }
 

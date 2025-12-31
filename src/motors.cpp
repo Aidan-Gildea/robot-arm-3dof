@@ -28,23 +28,23 @@ void setupMotors(int servoAmount)
 //later on I want to improve this function by taking in an angle from the rotary encoder and using it to find how to time to slow down speed. 
 bool ServosSetAngles(int args[])
 {
-
-  int angle1 = args[0];
-  int angle2 = args[1];
-  int angle3 = args[2];
-
-  // optional message for debugging
-  // Serial.println("Setting servos to angles: " + String(angle1) + ", " + String(angle2) + ", " + String(angle3));
-
-  if (angle1 < 0 || angle1 > 180 || angle2 < 0 || angle2 > 180 || angle3 < 0 || angle3 > 180) {
-    // optional message for debugging
-    // Serial.println("Invalid angle(s)");
-    return false;
+  // Check inputs are within bounds
+  for(int i = 0; i < 3; i++) {
+    if (args[i] < 0 || args[i] > 180) {
+    
+      return false;
+    }
   }
 
-  pwm.setPWM(0, 0, DEGREE_90_PULSE + SERVO1_PULSE_OFFSET); 
-  pwm.setPWM(1, 0, DEGREE_90_PULSE + SERVO2_PULSE_OFFSET);
-  pwm.setPWM(2, 0, DEGREE_90_PULSE +  SERVO3_PULSE_OFFSET);
+  // 2. Now map them to pulse lengths safely
+  int pulse1 = map(args[0], 0, 180, SERVOMIN, SERVOMAX);
+  int pulse2 = map(args[1], 0, 180, SERVOMIN, SERVOMAX);
+  int pulse3 = map(args[2], 0, 180, SERVOMIN, SERVOMAX);
+
+  // 3. Send to the PCA9685
+  pwm.setPWM(0, 0, pulse1 + SERVO1_PULSE_OFFSET); 
+  pwm.setPWM(1, 0, pulse2 + SERVO2_PULSE_OFFSET);
+  pwm.setPWM(2, 0, pulse3 + SERVO3_PULSE_OFFSET);
 
   return true;
 }

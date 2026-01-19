@@ -5,11 +5,22 @@
 
 int NUM_SERVOS;
 Adafruit_PWMServoDriver pwm;
+// maps offsets from degrees to pulse lengths
+
 const int GENERAL_PULSE_OFFSET = map(SERVO_ANGLE_OFFSET,0,180,0,SERVOMAX-SERVOMIN);
+
 const int SERVO1_PULSE_OFFSET = map(SERVO1_ANGLE_OFFSET,-90,90,-(SERVOMAX-SERVOMIN)/2, (SERVOMAX-SERVOMIN)/2);
 const int SERVO2_PULSE_OFFSET = map(SERVO2_ANGLE_OFFSET,-90,90,-(SERVOMAX-SERVOMIN)/2, (SERVOMAX-SERVOMIN)/2);
 const int SERVO3_PULSE_OFFSET = map(SERVO3_ANGLE_OFFSET,-90,90,-(SERVOMAX-SERVOMIN)/2, (SERVOMAX-SERVOMIN)/2);
+const int SERVO4_PULSE_OFFSET = map(SERVO4_ANGLE_OFFSET,-90,90,-(SERVOMAX-SERVOMIN)/2, (SERVOMAX-SERVOMIN)/2);
+const int SERVO5_PULSE_OFFSET = map(SERVO5_ANGLE_OFFSET,-90,90,-(SERVOMAX-SERVOMIN)/2, (SERVOMAX-SERVOMIN)/2);
+
 const int DEGREE_90_PULSE = SERVOMIN + (SERVOMAX - SERVOMIN) / 2; // 90 degrees pulse length
+
+// Arrays for easy iteration
+
+const int SERVO_ADDRESSES[NUM_MOTORS] = {SERVO1_ADDRESS, SERVO2_ADDRESS, SERVO3_ADDRESS, SERVO4_ADDRESS, SERVO5_ADDRESS};
+const int SERVO_PULSE_OFFSETS[NUM_MOTORS] = {SERVO1_PULSE_OFFSET, SERVO2_PULSE_OFFSET, SERVO3_PULSE_OFFSET, SERVO4_PULSE_OFFSET, SERVO5_PULSE_OFFSET};
 
 
 void setupMotors(int servoAmount)
@@ -29,22 +40,19 @@ void setupMotors(int servoAmount)
 bool ServosSetAngles(int args[])
 {
   // Check inputs are within bounds
-  for(int i = 0; i < 3; i++) {
+  for(int i = 0; i < NUM_MOTORS; i++) {
     if (args[i] < 0 || args[i] > 180) {
-    
       return false;
     }
   }
 
-  // 2. Now map them to pulse lengths safely
-  int pulse1 = map(args[0], 0, 180, SERVOMIN, SERVOMAX);
-  int pulse2 = map(args[1], 0, 180, SERVOMIN, SERVOMAX);
-  int pulse3 = map(args[2], 0, 180, SERVOMIN, SERVOMAX);
+  // Map angles to pulse lengths and send to PCA9685 using custom addresses
+  for(int i = 0; i < NUM_MOTORS; i++) {
+    int pulse = map(args[i], 0, 180, SERVOMIN, SERVOMAX);
+    // in this case pulse represents the angle converted to pulse length
 
-  // 3. Send to the PCA9685
-  pwm.setPWM(0, 0, pulse1 + SERVO1_PULSE_OFFSET); 
-  pwm.setPWM(1, 0, pulse2 + SERVO2_PULSE_OFFSET);
-  pwm.setPWM(2, 0, pulse3 + SERVO3_PULSE_OFFSET);
+    pwm.setPWM(SERVO_ADDRESSES[i], 0, pulse + SERVO_PULSE_OFFSETS[i]);
+  }
 
   return true;
 }
@@ -87,10 +95,16 @@ void HomeServos()
 
   Serial.println(degrees);
   
-  pwm.setPWM(0, 0, DEGREE_90_PULSE + SERVO1_PULSE_OFFSET); 
-  pwm.setPWM(1, 0, DEGREE_90_PULSE + SERVO2_PULSE_OFFSET + GENERAL_PULSE_OFFSET);
-  pwm.setPWM(2, 0, DEGREE_90_PULSE +  SERVO3_PULSE_OFFSET + GENERAL_PULSE_OFFSET);
+  // Home first servo without general offset (base rotation)
+  pwm.setPWM(SERVO_ADDRESSES[0], 0, DEGREE_90_PULSE + SERVO_PULSE_OFFSETS[0]); 
   
+  // Home remaining servos with general offset
+  for(int i = 1; i < 3; i++) {
+    pwm.setPWM(SERVO_ADDRESSES[i], 0, DEGREE_90_PULSE + SERVO_PULSE_OFFSETS[i] + GENERAL_PULSE_OFFSET);
+  }
+  for(int i = 3; i < NUM_MOTORS; i++) {
+    pwm.setPWM(SERVO_ADDRESSES[i], 0, DEGREE_90_PULSE + SERVO_PULSE_OFFSETS[i]); // since only the 1 and 2 servos need general pulse offset
+  }
 }
 
 float PrintServoAngle(String index) ///always returns integer angle, I wonder why that is :/

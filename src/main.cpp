@@ -8,8 +8,8 @@ void setup() {
   //beginning serial on Baud 9600
   Serial.begin(9600);
 
-  //motors setup for 3 servo
-  setupMotors(3);
+  //motors setup for 5 servos
+  setupMotors(5);
 
   delay(500);
   
@@ -18,9 +18,9 @@ void setup() {
 }
 
 
-const byte MAX_LEN = 15; // max length in bytes of an input line
+const byte MAX_LEN = 30; // max length in bytes of an input line (increased for 5 motors)
 char inputLine[MAX_LEN]; // char array to hold the current input line
-int angles[3]; // array to hold parsed angles
+int angles[5]; // array to hold parsed angles for 5 motors
 
 void loop() // serial reader
 {
@@ -45,7 +45,7 @@ void loop() // serial reader
 
 
       char* ptr = inputLine;
-      for (int i = 0; i < 3; i++) {
+      for (int i = 0; i < 5; i++) {
           angles[i] = atoi(ptr);
           ptr += strlen(ptr) + 1;  // jump past current token and null terminator
       }
@@ -60,7 +60,7 @@ void loop() // serial reader
 
       ServosSetAngles(angles);
 
-      for(int i = 0; i < 3; i++)
+      for(int i = 0; i < 5; i++)
       {
         angles[i] = 0; // Reset angles after processing
       }

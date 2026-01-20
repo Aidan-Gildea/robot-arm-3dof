@@ -13,15 +13,15 @@
 #define SERVO1_ADDRESS 0
 #define SERVO2_ADDRESS 1
 #define SERVO3_ADDRESS 2
-#define SERVO4_ADDRESS 3 // the last two motors control the gripper
-#define SERVO5_ADDRESS 4 // the last two motors control the gripper
+#define SERVO4_ADDRESS 4 // the last two motors control the gripper
+#define SERVO5_ADDRESS 6 // the last two motors control the gripper
 
 // Individual servo angle offsets to account for any hardware misalignment
 #define SERVO1_ANGLE_OFFSET 10
 #define SERVO2_ANGLE_OFFSET -10
 #define SERVO3_ANGLE_OFFSET -5
-#define SERVO4_ANGLE_OFFSET 0
-#define SERVO5_ANGLE_OFFSET 0
+#define SERVO4_ANGLE_OFFSET 7
+#define SERVO5_ANGLE_OFFSET -7
 
 extern int NUM_SERVOS;
 extern Adafruit_PWMServoDriver pwm;

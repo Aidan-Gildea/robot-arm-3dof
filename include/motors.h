@@ -20,8 +20,8 @@
 #define SERVO1_ANGLE_OFFSET 10
 #define SERVO2_ANGLE_OFFSET -10
 #define SERVO3_ANGLE_OFFSET -5
-#define SERVO4_ANGLE_OFFSET 7
-#define SERVO5_ANGLE_OFFSET -7
+#define SERVO4_ANGLE_OFFSET 10
+#define SERVO5_ANGLE_OFFSET -10
 
 extern int NUM_SERVOS;
 extern Adafruit_PWMServoDriver pwm;

@@ -39,7 +39,7 @@ STEP_SIZE = 1
 HOME_X, HOME_Y, HOME_Z = 0, 150, 50
 
 # Gripper angles (open and closed)
-GRIPPER_OPEN_ANGLES = (90, 90)      # servo4, servo5 angles when open
+GRIPPER_OPEN_ANGLES = (50, 130)      # servo4, servo5 angles when open
 GRIPPER_CLOSED_ANGLES = (0, 180)    # servo4, servo5 angles when closed
 
 # Position limits (mm)
@@ -156,10 +156,10 @@ def main():
             position_changed = True
             
         # X axis (Left/Right arrows)
-        if keys[pygame.K_RIGHT]:
+        if keys[pygame.K_LEFT]:
             state.x = clamp(state.x + STEP_SIZE, X_MIN, X_MAX)
             position_changed = True
-        if keys[pygame.K_LEFT]:
+        if keys[pygame.K_RIGHT]:
             state.x = clamp(state.x - STEP_SIZE, X_MIN, X_MAX)
             position_changed = True
             
@@ -210,7 +210,7 @@ def main():
             screen.blit(text, (50, 130 + i * 22))
         
         pygame.display.flip()
-        clock.tick(60)  # 60 FPS for smooth response
+        clock.tick(70)  # 60 FPS for smooth response
     
     # Cleanup
     if ser and ser.is_open:

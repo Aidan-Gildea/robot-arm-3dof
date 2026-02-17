@@ -9,6 +9,7 @@
 This project is a **3-Degree of Freedom (DOF) robotic arm** capable of precise end-effector positioning using Cartesian coordinate inputs. A custom **Inverse Kinematics (IK) solver written in Python and self-derived using algebra and geometry** converts target positions $(x, y, z)$ into joint angles, which are transmitted to an **Arduino Uno** for real-time execution.
 
 Here is a short **demo video** of :
+1. Robot Arm Explanation and Demo Video **(Most Recent!!)**: https://youtu.be/JEB1u3Z_pXA
 1. Robot Arm Path Tracing Demonstration: https://youtu.be/4sgCwkX76dg?si=9VvJAM_YSKhd0c1-
 2. Brief Hardware Overview: https://youtu.be/wcLp37mRvIc?si=lRgipF_aaHsbhIL2
 (These videos are updated as of 1/1/26)

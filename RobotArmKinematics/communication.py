@@ -20,7 +20,7 @@ time.sleep(2)
 
 # note that you need to offset the second and third angle by 60 if you are sending data manually. 
 
-ser.write(closed_gripper_message.encode('ascii'))
+ser.write(homing_message.encode('ascii'))
 
 # location = [90,90,90]  # x, y, z coordinates of the target point in mm
 

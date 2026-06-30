@@ -1,6 +1,6 @@
 # Hubert — 3-DOF Robotic Manipulator
 
-**Inverse Kinematics–driven motion planning with Python & Arduino, built for ~$250.**
+**Inverse Kinematics–driven motion planning with Python & Arduino, built for ~$100.**
 
 *Designed, programmed, and assembled as a self-directed learning project.*
 
@@ -23,7 +23,7 @@ I started this project as a 10th-grade student with almost no prior experience i
 
 ### Barriers Overcome
 
-- **Cost.** The entire project was completed for approximately **$250** in parts and tooling (excluding a 3D printer), making it accessible without institutional funding.
+- **Cost.** The entire project was completed for approximately **$100** in parts and tooling (excluding a 3D printer), making it accessible without institutional funding.
 - **Self-taught curriculum.** With no structured coursework available, I taught myself 3D CAD modeling (Fusion 360), electronics (wiring, PWM, I²C), and programming (C++, Python, serial communication) through YouTube tutorials and online documentation—learning as I built.
 
 ---
